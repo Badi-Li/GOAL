@@ -12,11 +12,11 @@ This repository contains Pytorch implementation of our paper: [Distilling LLM Pr
 
 4. We provide multiple model weights as follows (some models are still trained; 'Joint' denotes models jointly trained on MP3D and HM3D with less training iterations):
 
-| Dataset | w/o LLM       | ChatGPT         |
-|:-------:|:-------------:|:---------------:|
-| MP3D    | mp3d_wollm    | mp3d_chatgpt    |
-| HM3D    | hm3d_wollm    | hm3d_chatgpt    |
-| Joint   | joint_wollm   | joint_chatgpt   |
+    | Dataset | w/o LLM       | ChatGPT         |
+    |:-------:|:-------------:|:---------------:|
+    | MP3D    | mp3d_wollm    | mp3d_chatgpt    |
+    | HM3D    | hm3d_wollm    | hm3d_chatgpt    |
+    | Joint   | joint_wollm   | joint_chatgpt   |
 
 
 5. We provide model weights of sparse unet for segmentation [here](https://drive.google.com/file/d/194ZN-eua0CjN9o1ymbf4_9eLY1uUhXyT/view?usp=drive_link). Place it as `./pretrained_models/spconv_state.pth`.
