@@ -114,4 +114,4 @@ By default, training utilizes the first four GPUs. You may modify the visible GP
     ```
 
 ## Acknowledgements
-Our work is built upon [PONI](https://github.com/srama2512/PONI), [SGM](https://github.com/sx-zhang/SGM), [flow_matching]([astar_pycpp](https://github.com/srama2512/astar_pycpp)), [astar_pycpp](https://github.com/srama2512/astar_pycpp).
+Our work is built upon [PONI](https://github.com/srama2512/PONI), [SGM](https://github.com/sx-zhang/SGM), [flow_matching](https://github.com/facebookresearch/flow_matching), [astar_pycpp](https://github.com/srama2512/astar_pycpp).
