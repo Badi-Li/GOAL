@@ -1,5 +1,5 @@
 # GOAL
-This repository contains Pytorch implementation of our paper: Distilling LLM Prior to Flow Model for Generalizable Agent’s Imagination in Object Goal Navigation
+This repository contains Pytorch implementation of our paper: [Distilling LLM Prior to Flow Model for Generalizable Agent’s Imagination in Object Goal Navigation](http://arxiv.org/abs/2508.09423)
 
 ## Data and Model Weights Preparation
 1. Download scene datasets and episodes datasets of MP3D and HM3D according to the instructions [here](https://github.com/facebookresearch/habitat-lab/blob/main/DATASETS.md). Place the downloaded datasets under the directory `./data/scene_datastets`
@@ -10,16 +10,16 @@ This repository contains Pytorch implementation of our paper: Distilling LLM Pri
 
 4. We follow the common practices in [SGM](https://github.com/sx-zhang/SGM), [T-Diff](https://github.com/sx-zhang/T-diff) etc., to leverage area potential function from [PONI](https://github.com/srama2512/PONI) as a frontier based exploration strategy, prediction confidence of GOAL is low (e.g. at the very beginning of navigation with limited observations). You can download from official repo of [PONI](https://github.com/srama2512/PONI) or directly from [here](https://drive.google.com/file/d/1DpG4k7lFl6SV54Eud2CmPgva2CEQsVYD/view?usp=drive_link). Place the file as `./pretrained_models/area_potential.pth`. 
 
-4. We provide multiple model weights trained with different LLMs and on different datasets (some models are still trained; 'Joint' denotes models jointly trained on MP3D and HM3D with less training iterations):
+4. We provide multiple model weights as follows (some models are still trained; 'Joint' denotes models jointly trained on MP3D and HM3D with less training iterations):
 
-| Dataset | w/o LLM       | ChatGPT         | ChatGLM         | DeepSeek         |
-|:-------:|:-------------:|:---------------:|:---------------:|:----------------:|
-| MP3D    | mp3d_wollm    | mp3d_chatgpt    | mp3d_chatglm    | mp3d_deepseek    |
-| HM3D    | hm3d_wollm    | hm3d_chatgpt    | hm3d_chatglm    | hm3d_deepseek    |
-| Joint   | joint_wollm   | joint_chatgpt   | joint_chatglm   | joint_deepseek   |
+| Dataset | w/o LLM       | ChatGPT         |
+|:-------:|:-------------:|:---------------:|
+| MP3D    | mp3d_wollm    | mp3d_chatgpt    |
+| HM3D    | hm3d_wollm    | hm3d_chatgpt    |
+| Joint   | joint_wollm   | joint_chatgpt   |
 
 
-5. We provide model weights of sparse unet for segmentation [here](https://drive.google.com/file/d/194ZN-eua0CjN9o1ymbf4_9eLY1uUhXyT/view?usp=drive_link).
+5. We provide model weights of sparse unet for segmentation [here](https://drive.google.com/file/d/194ZN-eua0CjN9o1ymbf4_9eLY1uUhXyT/view?usp=drive_link). Place it as `./pretrained_models/spconv_state.pth`.
 
 ## Environments Setup
 We recommend separate environments for training (generative flow) and evaluation (ObjectGoal navigation).
@@ -74,7 +74,13 @@ We also provide the yaml files `train_env.yaml` and `eval.env.yaml` for referenc
 
 ## Running Experiments
 
-Experiment scripts with various configurations are available in the `./experiments_scripts` directory.
+Experiment scripts with various configurations are available in the `./experiments_scripts` directory. You should first activate corresponding environments
+```bash
+# For training 
+conda activate goal-train
+# For evaluation 
+conda activate goal-eval
+```
 
 ### Training
 
@@ -100,7 +106,7 @@ By default, training utilizes the first four GPUs. You may modify the visible GP
     ```bash
     sh script.sh 0,1 6
     ```
-    This command runs all parts on GPUs 0 and 1, with 6 threads per GPU. Note that 6 threads per GPU corresponds approximately to a 24GB GPU memory requirement. Please adjust the thread count according to your hardware capacity.
+    This command runs all parts on GPUs 0 and 1, with 6 threads per GPU. Note that 6 threads per GPU corresponds approximately to a 22GB GPU memory requirement. Please adjust the thread count according to your hardware capacity.
 
 3. After evaluation completes, merge results from all parts to obtain overall performance statistics:
     ```bash
