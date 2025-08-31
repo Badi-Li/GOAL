@@ -2,24 +2,24 @@
 This repository contains Pytorch implementation of our paper: Distilling LLM Prior to Flow Model for Generalizable Agent’s Imagination in Object Goal Navigation
 
 ## Data and Model Weights Preparation
-1. Download scene datasets and episodes datasets of MP3D and HM3D according to the instructions [here](https://github.com/facebookresearch/habitat-lab/blob/main/DATASETS.md). Place the downloaded datasets under the directory `./data/scene_datastets`
+1. Download scene datasets of MP3D and HM3D according to the instructions [here](https://github.com/facebookresearch/habitat-lab/blob/main/DATASETS.md). Place the downloaded datasets under the directory `./data/scene_datastets`
 
-2. For generating semantic maps dataset, please refer to the scripts offered by [PONI](https://github.com/srama2512/PONI). Note that for HM3D, minor modifications to the code are required due to differences in file formatting compared to MP3D. Alternatively, we alsp provide precomputed semantic maps at [MP3D](https://drive.google.com/file/d/1k4nreOA9xhC8PnKhk2FTlcsuAsZaAJki/view?usp=drive_link) and [HM3D](https://drive.google.com/file/d/174Vu2p97SRiRktLdfHV_4XaHFxucoz3F/view?usp=drive_link). After downloading, extract the files and place them in `./data/semantic_maps`.
+2. For generating semantic maps dataset, please refer to the scripts offered by [PONI](https://github.com/srama2512/PONI). Note that for HM3D, minor modifications to the code are required due to differences in file formatting compared to MP3D. Alternatively, we also provide precomputed semantic maps at [MP3D](https://drive.google.com/file/d/1k4nreOA9xhC8PnKhk2FTlcsuAsZaAJki/view?usp=drive_link) and [HM3D](https://drive.google.com/file/d/174Vu2p97SRiRktLdfHV_4XaHFxucoz3F/view?usp=drive_link). After downloading, extract the files and place them in `./data/semantic_maps`.
 
-3. Following [PONI](https://github.com/srama2512/PONI), the validation episode datasets are split into multiple parts for parallel processing. You may either split the datasets yourself or download the pre-split datasets directly from [here](https://drive.google.com/drive/folders/1ziiEyBOnRO5A2XHm24XSt5ext8HlkCQH?usp=drive_link). Place the resulting files under `./data/datasets/objectnav`
+3. Following [PONI](https://github.com/srama2512/PONI), the validation episode datasets are split into multiple parts for parallel processing. You may either download episodes datasets according to [instructions](https://github.com/facebookresearch/habitat-lab/blob/main/DATASETS.md) and split the datasets yourself or download the pre-split datasets directly from [here](https://drive.google.com/drive/folders/1ziiEyBOnRO5A2XHm24XSt5ext8HlkCQH?usp=drive_link). Place the resulting files under `./data/datasets/objectnav`
 
 4. We follow the common practices in [SGM](https://github.com/sx-zhang/SGM), [T-Diff](https://github.com/sx-zhang/T-diff) etc., to leverage area potential function from [PONI](https://github.com/srama2512/PONI) as a frontier based exploration strategy, prediction confidence of GOAL is low (e.g. at the very beginning of navigation with limited observations). You can download from official repo of [PONI](https://github.com/srama2512/PONI) or directly from [here](https://drive.google.com/file/d/1DpG4k7lFl6SV54Eud2CmPgva2CEQsVYD/view?usp=drive_link). Place the file as `./pretrained_models/area_potential.pth`. 
 
-4. We provide multiple model weights trained with different LLMs and on different datasets (some models are still trained; 'Joint' denotes models jointly trained on MP3D and HM3D with less training iterations):
+4. We provide multiple model weights trained with different LLMs and on different datasets ('Joint' denotes models jointly trained on MP3D and HM3D with less training iterations):
 
-| Dataset | w/o LLM       | ChatGPT         | ChatGLM         | DeepSeek         |
-|:-------:|:-------------:|:---------------:|:---------------:|:----------------:|
-| MP3D    | mp3d_wollm    | mp3d_chatgpt    | mp3d_chatglm    | mp3d_deepseek    |
-| HM3D    | hm3d_wollm    | hm3d_chatgpt    | hm3d_chatglm    | hm3d_deepseek    |
-| Joint   | joint_wollm   | joint_chatgpt   | joint_chatglm   | joint_deepseek   |
+| Dataset | w/o LLM       | ChatGPT         |
+|:-------:|:-------------:|:---------------:|
+| MP3D    | mp3d_wollm    | [mp3d_chatgpt](https://drive.google.com/file/d/1t3d-EWvN4G6DcecRPRyWOehV4rPPHO07/view?usp=drive_link)    | 
+| HM3D    | hm3d_wollm    | hm3d_chatgpt    | 
+| Joint   | joint_wollm   | joint_chatgpt   | 
 
 
-5. We provide model weights of sparse unet for segmentation [here](https://drive.google.com/file/d/194ZN-eua0CjN9o1ymbf4_9eLY1uUhXyT/view?usp=drive_link).
+5. We provide model weights of sparse unet for segmentation [here](https://drive.google.com/file/d/194ZN-eua0CjN9o1ymbf4_9eLY1uUhXyT/view?usp=drive_link). Place it as `./pretrained_models/spconv_state.pth`.
 
 ## Environments Setup
 We recommend separate environments for training (generative flow) and evaluation (ObjectGoal navigation).
@@ -74,7 +74,13 @@ We also provide the yaml files `train_env.yaml` and `eval.env.yaml` for referenc
 
 ## Running Experiments
 
-Experiment scripts with various configurations are available in the `./experiments_scripts` directory.
+Experiment scripts with various configurations are available in the `./experiments_scripts` directory. You should first activate corresponding environments
+```bash
+# For training 
+conda activate goal-train
+# For evaluation 
+conda activate goal-eval
+```
 
 ### Training
 
@@ -85,6 +91,7 @@ By default, training utilizes the first four GPUs. You may modify the visible GP
 1. Set the environment variable `GOAL_ROOT` to point to the root directory of the GOAL repository:
     ```bash
     export GOAL_ROOT=<YOUR_PATH_TO_GOAL>
+    export PYTHONPATH=<YOUR_PATH_TO_GOAL>
     ```
 
 2. Run the evaluation script as follows:
@@ -100,7 +107,7 @@ By default, training utilizes the first four GPUs. You may modify the visible GP
     ```bash
     sh script.sh 0,1 6
     ```
-    This command runs all parts on GPUs 0 and 1, with 6 threads per GPU. Note that 6 threads per GPU corresponds approximately to a 24GB GPU memory requirement. Please adjust the thread count according to your hardware capacity.
+    This command runs all parts on GPUs 0 and 1, with 6 threads per GPU. Note that 6 threads per GPU corresponds approximately to a 22GB GPU memory requirement. Please adjust the thread count according to your hardware capacity.
 
 3. After evaluation completes, merge results from all parts to obtain overall performance statistics:
     ```bash
@@ -109,3 +116,14 @@ By default, training utilizes the first four GPUs. You may modify the visible GP
 
 ## Acknowledgements
 Our work is built upon [PONI](https://github.com/srama2512/PONI), [SGM](https://github.com/sx-zhang/SGM), [flow_matching]([astar_pycpp](https://github.com/srama2512/astar_pycpp)), [astar_pycpp](https://github.com/srama2512/astar_pycpp).
+
+## Citation 
+If you find this codebase useful, please site us:
+```bash
+@article{li2025distilling,
+  title={Distilling LLM Prior to Flow Model for Generalizable Agent's Imagination in Object Goal Navigation},
+  author={Li, Badi and Lu, Ren-jie and Zhou, Yu and Meng, Jingke and Zheng, Wei-shi},
+  journal={arXiv preprint arXiv:2508.09423},
+  year={2025}
+}
+```
