@@ -44,9 +44,10 @@ def load_scheduler(args, optimizer, loader_length):
         eta_min = args.final_lr
     )
 
-    plateau_scheduler = torch.optim.lr_scheduler.LambdaLR(
+    plateau_scheduler = torch.optim.lr_scheduler.ConstantLR(
         optimizer,
-        lr_lambda=lambda step: 1.0
+        factor=args.final_lr / args.base_lr,
+        total_iters=plateau_steps
     )
 
     scheduler = torch.optim.lr_scheduler.SequentialLR(
