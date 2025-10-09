@@ -6,7 +6,7 @@ export PYTHONPATH=$PYTHONPATH:$GOAL_ROOT
 export PYTHONPATH=$PYTHONPATH:$GOAL_ROOT/nav/astar_pycpp
 export MAGNUM_LOG=quiet GLOG_minloglevel=2 HABITAT_SIM_LOG=quiet
 
-SAVE_ROOT=$EXPT_ROOT/mp3d_objectnav
+SAVE_ROOT=$EXPT_ROOT/hm3d_transfer_mp3d_objectnav
 
 cd $GOAL_ROOT/nav
 
@@ -52,7 +52,7 @@ run_eval() {
         GLOBAL_AGENT.seg_interval 5 \
         SCENE_SEGMENTATION.seg_pred_thr 0.7 \
         SCENE_SEGMENTATION.sem_pred_weights $GOAL_ROOT/pretrained_models/spconv_state.pth \
-        FM.fm_weights $GOAL_ROOT/pretrained_models/mp3d_chatgpt.pth \
+        FM.fm_weights $GOAL_ROOT/pretrained_models/hm3d_chatgpt.pth \
         TENSORBOARD_DIR $SAVE_ROOT/tb_seed_100_${val_part} \
         LOG_FILE $SAVE_ROOT/logs_seed_100_${val_part}.txt \
         GLOBAL_AGENT.name "PFExp" \

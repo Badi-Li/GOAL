@@ -6,7 +6,7 @@ export PYTHONPATH=$PYTHONPATH:$GOAL_ROOT
 export PYTHONPATH=$PYTHONPATH:$GOAL_ROOT/nav/astar_pycpp
 export MAGNUM_LOG=quiet GLOG_minloglevel=2 HABITAT_SIM_LOG=quiet
 
-SAVE_ROOT=$EXPT_ROOT/mp3d_objectnav
+SAVE_ROOT=$EXPT_ROOT/hm3d_objectnav
 
 cd $GOAL_ROOT/nav
 
@@ -14,9 +14,9 @@ cd $GOAL_ROOT/nav
 IFS=',' read -ra GPUS <<< "$1"
 MAX_THREADS_PER_GPU=$2
 
-# If val parts list ($3) is empty, use default 0–10
+# If val parts list ($3) is empty, use default 0–19
 if [ -z "$3" ]; then
-    SELECTED_PARTS=(0 1 2 3 4 5 6 7 8 9 10)
+    SELECTED_PARTS=(0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19)
 else
     IFS=',' read -ra SELECTED_PARTS <<< "$3"
 fi
@@ -40,8 +40,8 @@ run_eval() {
     echo "Starting $val_part on GPU $device"
 
     CUDA_VISIBLE_DEVICES=$device python eval_goal.py \
-        --exp-config $GOAL_ROOT/nav/configs/transfer_objectnav_mp3d.yaml \
-        TASK_CONFIG.DATASET.DATA_PATH $GOAL_ROOT/data/datasets/objectnav/mp3d/v1/val_parts/{split}/{split}.json.gz \
+        --exp-config $GOAL_ROOT/nav/configs/transfer_objectnav_hm3d.yaml \
+        TASK_CONFIG.DATASET.DATA_PATH $GOAL_ROOT/data/datasets/objectnav/hm3d/v1/val_parts/{split}/{split}.json.gz \
         EVAL.SPLIT $val_part \
         TASK_CONFIG.SEED 100 \
         FLOW.expand_ratio 1.4 \
@@ -50,9 +50,10 @@ run_eval() {
         PLANNER.change_goal_thr_up 320 \
         PLANNER.change_goal_thr_down 5 \
         GLOBAL_AGENT.seg_interval 5 \
+        GLOBAL_AGENT.dataset hm3d \
         SCENE_SEGMENTATION.seg_pred_thr 0.7 \
         SCENE_SEGMENTATION.sem_pred_weights $GOAL_ROOT/pretrained_models/spconv_state.pth \
-        FM.fm_weights $GOAL_ROOT/pretrained_models/mp3d_chatgpt.pth \
+        FM.fm_weights $GOAL_ROOT/pretrained_models/hm3d_chatgpt.pth \
         TENSORBOARD_DIR $SAVE_ROOT/tb_seed_100_${val_part} \
         LOG_FILE $SAVE_ROOT/logs_seed_100_${val_part}.txt \
         GLOBAL_AGENT.name "PFExp" \
