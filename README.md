@@ -18,8 +18,7 @@ This repository contains Pytorch implementation of our paper: [Distilling LLM Pr
 | HM3D    | [hm3d_chatgpt](https://drive.google.com/file/d/1CELihXmObvU3jAgcGrcujsK8IcHONcAh/view?usp=drive_link)    |  
 
 
-5. We provide model weights of sparse unet for segmentation [here](https://drive.google.com/file/d/194ZN-eua0CjN9o1ymbf4_9eLY1uUhXyT/view?usp=drive_link). Place it as `./pretrained_models/spconv_state.pth`.
-5. We provide model weights of sparse unet for segmentation [here](https://drive.google.com/file/d/194ZN-eua0CjN9o1ymbf4_9eLY1uUhXyT/view?usp=drive_link). Place it as `./pretrained_models/spconv_state.pth`.
+5. We provide model weights of sparse unet for segmentation [here](https://drive.google.com/file/d/14miU42QOVahzjIWCLijLxECke3X8MGeL/view?usp=drive_link). Place it as `./pretrained_models/spconv_state.pth`.
 
 ## Environments Setup
 We recommend separate environments for training (generative flow) and evaluation (ObjectGoal navigation).
