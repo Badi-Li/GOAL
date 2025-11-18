@@ -12,11 +12,10 @@ This repository contains Pytorch implementation of our paper: [Distilling LLM Pr
 
 4. We provide pretrained models trained on MP3D and HM3D with ChatGPT Prior:
 
-| Dataset | Models        |
-|:-------:|:---------------:|
-| MP3D    | [mp3d_chatgpt](https://drive.google.com/file/d/1t3d-EWvN4G6DcecRPRyWOehV4rPPHO07/view?usp=drive_link)    | 
-| HM3D    | [hm3d_chatgpt](https://drive.google.com/file/d/1CELihXmObvU3jAgcGrcujsK8IcHONcAh/view?usp=drive_link)    |  
-
+    | Dataset | Models        |
+    |:-------:|:---------------:|
+    | MP3D    | [mp3d_chatgpt](https://drive.google.com/file/d/1t3d-EWvN4G6DcecRPRyWOehV4rPPHO07/view?usp=drive_link)    | 
+    | HM3D    | [hm3d_chatgpt](https://drive.google.com/file/d/1CELihXmObvU3jAgcGrcujsK8IcHONcAh/view?usp=drive_link)    |  
 
 5. We provide model weights of sparse unet for segmentation [here](https://drive.google.com/file/d/14miU42QOVahzjIWCLijLxECke3X8MGeL/view?usp=drive_link). Place it as `./pretrained_models/spconv_state.pth`.
 
